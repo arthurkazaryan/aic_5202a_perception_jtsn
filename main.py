@@ -16,7 +16,7 @@ tracking = {}
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--model", type=str, default="yolov8n", help="name of the model")
-    parser.add_argument("--folder_path", type=str, default="dataset/test_sequence_1_normalized", help="path to a dataset")
+    parser.add_argument("--folder_path", type=str, default="dataset/test_sequence_1_floor", help="path to a dataset")
     parser.add_argument("--export", type=str, default="", help="export path")
 
     args = parser.parse_args()
@@ -30,7 +30,7 @@ if __name__ == "__main__":
 
         frame = cv2.imread(filename)
         frame = cv2.resize(frame, [640, 640], interpolation=cv2.INTER_AREA)
-        # frame = cv2.normalize(frame, None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F) * 255
+        frame = (cv2.normalize(frame, None, 0, 1.0, cv2.NORM_MINMAX, dtype=cv2.CV_32F) * 255).astype("uint8")
 
         results = model.predict(frame, verbose=False)
         frame = draw_trespass_region(frame)
